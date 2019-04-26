@@ -92,3 +92,9 @@ func TestResponseWriter_WriteHeader(t *testing.T) {
 	assert.Equal(t, "Not Found\n", e.Body)
 	assert.Equal(t, "text/plain; charset=utf8", e.Headers["Content-Type"])
 }
+
+func Test_JSON_API_isTextMime(t *testing.T) {
+	assert.Equal(t, isTextMime("application/vnd.api+json"), true)
+	assert.Equal(t, isTextMime("application/vnd.api+json; charset=utf-8"), true)
+	assert.Equal(t, isTextMime("Application/VnD.aPi+jSon"), true)
+}

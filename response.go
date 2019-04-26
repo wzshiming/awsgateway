@@ -119,6 +119,8 @@ func isTextMime(kind string) bool {
 		return true
 	case "application/json":
 		return true
+	case "application/vnd.api+json":
+		return true
 	case "application/xml":
 		return true
 	default:
