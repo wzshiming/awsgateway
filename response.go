@@ -66,6 +66,7 @@ func (w *ResponseWriter) WriteHeader(status int) {
 	}
 
 	w.out.Headers = h
+	w.out.MultiValueHeaders = w.Header()
 	w.wroteHeader = true
 }
 

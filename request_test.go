@@ -38,9 +38,9 @@ func TestNewRequest_queryString(t *testing.T) {
 	e := events.APIGatewayProxyRequest{
 		HTTPMethod: "GET",
 		Path:       "/pets",
-		QueryStringParameters: map[string]string{
-			"order":  "desc",
-			"fields": "name,species",
+		MultiValueQueryStringParameters: map[string][]string{
+			"order":  {"desc"},
+			"fields": {"name,species"},
 		},
 	}
 
@@ -73,10 +73,10 @@ func TestNewRequest_header(t *testing.T) {
 		HTTPMethod: "POST",
 		Path:       "/pets",
 		Body:       `{ "name": "Tobi" }`,
-		Headers: map[string]string{
-			"Content-Type": "application/json",
-			"X-Foo":        "bar",
-			"Host":         "example.com",
+		MultiValueHeaders: map[string][]string{
+			"Content-Type": {"application/json"},
+			"X-Foo":        {"bar"},
+			"Host":         {"example.com"},
 		},
 		RequestContext: events.APIGatewayProxyRequestContext{
 			RequestID: "1234",

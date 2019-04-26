@@ -22,11 +22,7 @@ func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Req
 	}
 
 	// querystring
-	q := u.Query()
-	for k, v := range e.QueryStringParameters {
-		q.Set(k, v)
-	}
-	u.RawQuery = q.Encode()
+	u.RawQuery = url.Values(e.MultiValueQueryStringParameters).Encode()
 
 	// base64 encoded body
 	body := e.Body
@@ -48,12 +44,14 @@ func NewRequest(ctx context.Context, e events.APIGatewayProxyRequest) (*http.Req
 	req.RemoteAddr = e.RequestContext.Identity.SourceIP
 
 	// header fields
-	for k, v := range e.Headers {
-		req.Header.Set(k, v)
+	if e.MultiValueHeaders == nil {
+		req.Header = http.Header{}
+	} else {
+		req.Header = http.Header(e.MultiValueHeaders)
 	}
 
 	// content-length
-	if req.Header.Get("Content-Length") == "" && body != "" {
+	if body != "" && req.Header.Get("Content-Length") == "" {
 		req.Header.Set("Content-Length", strconv.Itoa(len(body)))
 	}
 
