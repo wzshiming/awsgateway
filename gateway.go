@@ -1,5 +1,5 @@
-// Package gateway provides a drop-in replacement for net/http.ListenAndServe for use in AWS Lambda & API Gateway.
-package gateway
+// Package awsgateway provides a drop-in replacement for net/http.ListenAndServe for use in AWS Lambda & API Gateway.
+package awsgateway
 
 import (
 	"context"

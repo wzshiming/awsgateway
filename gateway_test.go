@@ -1,16 +1,16 @@
-package gateway_test
+package awsgateway_test
 
 import (
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/apex/gateway"
+	"github.com/wzshiming/awsgateway"
 )
 
 func Example() {
 	http.HandleFunc("/", hello)
-	log.Fatal(gateway.ListenAndServe(":3000", nil))
+	log.Fatal(awsgateway.ListenAndServe(":3000", nil))
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
