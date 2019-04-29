@@ -57,15 +57,6 @@ func (w *ResponseWriter) WriteHeader(status int) {
 
 	w.out.StatusCode = status
 
-	h := make(map[string]string)
-
-	for k, v := range w.Header() {
-		if len(v) > 0 {
-			h[k] = v[len(v)-1]
-		}
-	}
-
-	w.out.Headers = h
 	w.out.MultiValueHeaders = w.Header()
 	w.wroteHeader = true
 }
@@ -105,9 +96,13 @@ func isBinary(h http.Header) bool {
 
 // isTextMime returns true if the content type represents textual data.
 func isTextMime(kind string) bool {
-	mt, _, err := mime.ParseMediaType(kind)
+	mt, params, err := mime.ParseMediaType(kind)
 	if err != nil {
 		return false
+	}
+
+	if _, ok := params["charset"]; ok {
+		return true
 	}
 
 	if strings.HasPrefix(mt, "text/") {
@@ -115,15 +110,13 @@ func isTextMime(kind string) bool {
 	}
 
 	switch mt {
-	case "image/svg+xml":
+	case "image/svg+xml",
+		"application/json",
+		"application/vnd.api+json",
+		"application/xml",
+		"application/javascript":
 		return true
-	case "application/json":
-		return true
-	case "application/vnd.api+json":
-		return true
-	case "application/xml":
-		return true
-	default:
-		return false
 	}
+
+	return false
 }
